@@ -1,0 +1,73 @@
+#   a118_turtles_in_traffic.py
+#   Shrinav Loka
+#   Turtles in Traffic
+#   Move turtles horizontally and vertically across screen.
+#   The purpose of this code is to stop turtles when they collide and turn them around if they miss.
+#   The expected output is supposed to show turtles colliding into each other to turn into different colors and turning around if they miss to collide again.
+import turtle as trtl
+
+# create two empty lists of turtles, adding to them later
+horiz_turtles = []
+vert_turtles = []
+
+
+# use interesting shapes and colors
+turtle_shapes = ["arrow", "turtle", "circle", "square", "triangle", "classic"]
+horiz_colors = ["red", "blue", "green", "orange", "purple", "gold"]
+vert_colors = ["darkred", "darkblue", "lime", "salmon", "indigo", "brown"]
+
+tloc = 50
+for s in turtle_shapes:
+  #creates first turtle
+  ht = trtl.Turtle(shape=s)
+  horiz_turtles.append(ht)
+  ht.penup()
+  new_color = horiz_colors.pop()
+  ht.fillcolor(new_color)
+  ht.goto(-350, tloc)
+  ht.setheading(0)
+  #creates second turtle
+  vt = trtl.Turtle(shape=s)
+  vert_turtles.append(vt)
+  vt.penup()
+  new_color = vert_colors.pop()
+  vt.fillcolor(new_color)
+  vt.goto( -tloc, 350)
+  vt.setheading(270)
+  
+  tloc += 50
+# TODO: move turtles across and down screen, stopping for collisions
+steps = 0
+x = turtle_shapes.pop()
+y = turtle_shapes.pop()
+while steps < 50:
+  for ht in horiz_turtles:
+    for vt in vert_turtles:
+      #Enhancement 1: speeded up the turtles
+      ht.forward(10)
+      vt.forward(9)
+      if (abs(ht.xcor() - vt.xcor()) < 20):
+        if (abs(ht.ycor() - vt.ycor()) < 20):
+          #Enhancment 2: Changes the shape and the color when they collide
+          ht.shape(x)
+          vt.shape(y)  
+          vt.fillcolor("red")
+          ht.fillcolor("green")
+          vert_turtles.remove(vt)
+          horiz_turtles.remove(ht)      
+      #Enhancement 3: Changes the speed and makes sure that turtle would turn around before reaching the x or y coordinate of 400. After turning around they would move forward to collide.  
+      if (ht.xcor() > 400):
+        ht.right(180)
+        ht.forward(350)
+      if (vt.ycor() < -400):
+        vt.right(180)
+        vt.forward(450)
+
+
+  #Increases the steps by 1 for each iteration
+  steps = steps + 1
+
+
+
+wn = trtl.Screen()
+wn.mainloop()
